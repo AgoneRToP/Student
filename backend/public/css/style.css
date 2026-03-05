@@ -1,0 +1,78 @@
+.student-table {
+    width: 100%;
+    max-width: 800px;
+    border-collapse: collapse;
+    margin: 20px auto;
+    font-family: sans-serif;
+}
+
+.student-table th {
+    text-align: left;
+    padding: 12px 8px;
+    font-weight: bold;
+    color: #333;
+}
+
+.student-table td {
+    padding: 12px 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+.student-table tr:last-child td {
+    border-bottom: none;
+}
+
+.student-table tr:hover {
+    background-color: #f5f5f5;
+}
+
+.form-container {
+    background: #f4f4f4;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+}
+
+.form-container input {
+    padding: 8px;
+    margin-right: 10px;
+}
+
+.btn-delete {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-edit {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+
+button:hover {
+    opacity: 0.8;
+}
+
+.dlt {
+    color: red;
+    cursor: pointer;
+    border: 1px solid red;
+    background: none;
+    border-radius: 4px;
+    padding: 2px 10px;
+}
+
+.add {
+    margin: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
