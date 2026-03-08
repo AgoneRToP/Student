@@ -5,49 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Students Management</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+      crossorigin="anonymous"
+    />
 </head>
 <body>
-    <h1>Управление списком студентов</h1>
-    
-    <div class="add">
-        <h3>Добавить нового студента</h3>
-        <form action="/students" method="POST">
-            <input type="text" name="name" placeholder="Имя" required>
-            <input type="number" name="age" placeholder="Возраст" required>
-            <input type="text" name="major" placeholder="Факультет" required>
-            <input type="number" step="0.1" name="gpa" placeholder="GPA" required>
-            <button type="submit">Добавить в список</button>
-        </form>
+    <div class="container p-5">
+        <h1 class="p-5 text-center">Управление списком студентов</h1>
+        
+        <table class="student-table">
+            <thead>
+                <%- include("components/table.ejs") %>
+            </thead>
+            <tbody>
+                <% data.forEach((student, index) => { %>
+                    <%- include("components/student-row", {student, index}) %>
+                <% }) %>
+                <%- include('components/add.ejs') %>
+            </tbody>
+        </table>
+            
+
+        <%- include("components/pagination", { page, totalPages, totalCount }) %>
     </div>
-
-    <table class="student-table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Имя</th>
-                <th>Факультет</th>
-                <th>GPA</th>
-                <th>Действия</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% data.forEach(student => { %>
-            <tr>
-                <td><%= student.id %>.</td>
-                <td><%= student.name %></td>
-                <td><%= student.major %></td>
-                <td><%= student.gpa %></td>
-                <td>
-                    <form action="/students/<%= student.id %>?_method=DELETE" method="POST" style="display:inline;">
-                        <button class="dlt" type="submit">
-                            Удалить
-                        </button>
-                    </form>
-                </td>
-            </tr>
-            <% }) %>
-        </tbody>
-    </table>
-
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+      crossorigin="anonymous"
+    ></script>
 </body>
 </html>

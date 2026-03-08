@@ -1,0 +1,26 @@
+<tr>
+    <td colspan="4"></td>
+    <td>
+        <button class="btn-add" onclick="document.getElementById('modal').style.display='flex'">
+            Добавить
+        </button>
+    </td>
+</tr>
+
+<div class="modal" id="modal">
+    <div class="input-group">
+        <form action="/students" method="POST">
+            <h3>Добавить нового студента</h3>
+            <div class="inputs">
+                <input type="text" name="name" placeholder="Имя" required>
+                <input type="number" name="age" placeholder="Возраст" required>
+                <input type="text" name="major" placeholder="Факультет" required>
+                <input type="number" step="0.1" name="gpa" placeholder="GPA" required>
+                <div class="input-btn">
+                    <button class="btn-add" style="color: #333333; border: 1px solid #333333;" onclick="document.getElementById('modal').style.display='none'">Закрыть</button>
+                    <button class="btn-add" id="showDataBtn" type="submit">Добавить в список</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<nav aria-label="Page navigation example">
+    <div class="d-flex align-items-center justify-content-center gap-3">
+        <p class="mb-0">Total count: <%= totalCount %></p>
+
+        <ul class="pagination mb-0">
+            <li class="page-item <%= page <= 1 ? 'disabled' : '' %>">
+                <a class="page-link" href="?limit=<%= limit %>&page=<%= page - 1 %>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            <% Array.from({ length: totalPages }, (_, index) => index + 1).forEach(el => { %>
+                <li class="page-item <%= page == el ? 'active' : '' %>">
+                    <a class="page-link" href="?limit=<%= limit %>&page=<%= el %>"><%= el %></a>
+                </li>
+            <% }) %>
+            <li class="page-item <%= page >= totalPages ? 'disabled' : '' %>">
+                <a class="page-link" href="?limit=<%= limit %>&page=<%= page + 1 %>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+
+        <select class="form-select w-auto" onchange="window.location.href='?limit=' + this.value + '&page=1'">
+            <option value="5"  <%= limit == 5  ? 'selected' : '' %>>5</option>
+            <option value="10" <%= limit == 10 ? 'selected' : '' %>>10</option>
+            <option value="20" <%= limit == 20 ? 'selected' : '' %>>20</option>
+        </select>
+    </div>
+</nav>

@@ -1,0 +1,13 @@
+<tr>
+    <td scope="row"><%= index + 1 + (page - 1) * 5 %>.</td>
+    <td><%= student.name %></td>
+    <td><%= student.major %></td>
+    <td><%= student.gpa %></td>
+    <td> 
+        <form action="/students/<%= student.id %>?_method=DELETE" method="POST" style="display:inline;">
+            <button class="dlt" type="submit" >
+                Удалить
+            </button>
+        </form>
+    </td>
+</tr>

@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const express = require("express");
 const methodOverride = require("method-override");
+const { readFileCustom, writeFileCustom } = require("./helpers/functions");
 
 const app = express();
 
@@ -11,26 +12,41 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-const DB_FILE = path.join(__dirname, "db", "student.json");
-
 app.get("/", (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
+  const data = readFileCustom();
+  const { limit = 5, page = 1 } = req.query
 
-  res.render("index", { data });
+  const totalCount = data.length
+  const totalPages = Math.ceil(data.length / Number(limit))
+
+  res.render("index", {
+    totalCount,
+    totalPages,
+    limit: Number(limit),
+    page: Number(page),
+    data: data.slice((page - 1) * limit, page * limit),
+  });
 });
 
 app.get("/students", (req, res) => {
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
+  const data = readFileCustom();
+  const { limit = 5, page = 1 } = req.query;
+
+  const totalCount = data.length;
+  const totalPages = Math.ceil(data.length / Number(limit));
 
   res.json({
     success: true,
     data,
+    limit: Number(limit),
+    page: Number(page),
+    data: data.slice((page - 1) * limit, page * limit),
   });
 });
 
 app.get("/students/:id", (req, res) => {
   const studentId = req.params.id;
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
+  const data = readFileCustom();
 
   const student = data.find((el) => el.id == studentId);
 
@@ -52,12 +68,13 @@ app.post("/students", (req, res) => {
 
   if (!name || !age || !major || !gpa) {
     res.status(400).json({
+      success: false,
       message: "Berilgan field'lar to'liq emas",
     });
     return;
   }
 
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
+  const data = readFileCustom();
 
   const maxId = data.length > 0 ? Math.max(...data.map(s => s.id)) : 0;
 
@@ -71,8 +88,8 @@ app.post("/students", (req, res) => {
 
   data.push(newStudent);
 
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
-
+  writeFileCustom(data);
+  
   res.redirect("/"); 
 
   res.status(201).json({
@@ -87,16 +104,18 @@ app.put("/students/:id", (req, res) => {
 
   if (!name || !age || !major || !gpa) {
     res.status(400).json({
+      success: false,
       message: "Berilgan field'lar to'liq emas",
     });
     return;
   }
 
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
+  const data = readFileCustom();
   const studentIndex = data.findIndex((el) => el.id == studentId);
 
   if (studentIndex === -1) {
     res.status(404).json({
+      success: false,
       message: `Berilgan ID: ${studentId} topilmadi`,
     });
     return;
@@ -113,19 +132,20 @@ app.put("/students/:id", (req, res) => {
 
   data.splice(studentIndex, 1, updateStudent);
 
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  writeFileCustom(data);
 
   res.status(204).send();
 });
 
 app.delete("/students/:id", (req, res) => {
   const studentId = req.params.id;
-  const data = JSON.parse(fs.readFileSync(DB_FILE));
+  const data = readFileCustom();
 
   const studentIndex = data.findIndex((el) => el.id == studentId);
 
   if (data.length === studentIndex.length) {
     res.status(404).send({
+      success: false,
       message: `Berilgan ID: ${studentId} topilmadi`,
     });
     return;
@@ -133,7 +153,7 @@ app.delete("/students/:id", (req, res) => {
 
   data.splice(studentIndex, 1);
 
-  fs.writeFileSync(DB_FILE, JSON.stringify(data, null, 2));
+  writeFileCustom(data);
 
   res.redirect("/");
 
