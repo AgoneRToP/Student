@@ -151,7 +151,7 @@ app.delete("/students/:id", (req, res) => {
     return;
   }
 
-  data.splice(studentIndex, 1);
+  data.splice(studentIndex, 1); 
 
   writeFileCustom(data);
 
